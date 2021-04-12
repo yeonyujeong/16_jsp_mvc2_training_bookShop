@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<link rel="stylesheet" href="css/style.css"/>
-<script src="js/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet" href="${contextPath}/css/style.css"/>
+<script src="${contextPath}/js/jquery-3.5.1.min.js"></script>
 <script>
 	$(document).ready(function(){
-		
-	    $("#replyPro").click(function(){
+	    $("#replyPro").click(function(){//[답변하기]버튼 클릭
 	  		  var query = {qna_content:$("#rContent").val(),
 	  				       qna_writer:$("#qna_writer").val(),
 	  				       book_title:$("#book_title").val(),
@@ -16,26 +16,23 @@
 	  		  
 	  		  $.ajax({
 	  		     type: "POST",
-	  		     url: "mg/qnaReplyPro.do",
+	  		     url: "${contextPath}/mg/qnaReplyPro.do",
 	  		     data: query,
 	  		     success: function(data){
-	  		    	window.location.href="mg/qnaList.do";
+	  		    	window.location.href="${contextPath}/mg/qnaList.do";
 	  		     }
 	  		  });
-	  		  
 		});
 	    
-	    
-	    $("#cancle").click(function() {
-	    	window.location.href="mg/managerMain.do";
+	    $("#cancle").click(function(){//[취소]버튼 클릭
+	    	window.location.href="${contextPath}/mg/managerMain.do";
 		});
 	       
 	});
-
 </script>
 
 <c:if test="${empty sessionScope.id}">
-	<meta http-equiv="Refresh" content="0;url=mg/managerMain.do" >
+  <meta http-equiv="Refresh" content="0;url=${contextPath}/mg/managerMain.do" >
 </c:if>
 
 <input type="hidden" id="qna_writer" value="manager">

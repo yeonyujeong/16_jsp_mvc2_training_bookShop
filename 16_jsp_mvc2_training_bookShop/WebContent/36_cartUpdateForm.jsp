@@ -2,13 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:if test="${empty sessionScope.id}">
-	<meta http-equiv="Refresh" content="0;url=index.do">
+  <meta http-equiv="Refresh" content="0;url=${contextPath}/index.do">
 </c:if>
 
 <div id="cartUpdate">
-	<form id="cartUpdateForm" method="post" action="cartUpdatePro.do">
-		<input type="text" name="buy_count" size="5" value="${buy_count}">
-		<input type="hidden" name="cart_id" value="${cart_id}">
-		<input type="submit" value="변경" >  
-	</form>
+  <form id="cartUpdateForm" method="post" action="${contextPath}/cartUpdatePro.do">
+     <input type="text" name="buy_count" size="5" value="${buy_count}">
+     <input type="hidden" name="cart_id" value="${cart_id}">
+	 <input type="submit" value="변경" >  
+  </form>
 </div> 

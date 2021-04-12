@@ -1,68 +1,79 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<link rel="stylesheet" href="css/style.css"/>
-<script src="js/jquery-3.5.1.min.js"></script>
-<script src="js/jquery.form.min.js"></script>
+<link rel="stylesheet" href="${contextPath}/css/style.css"/>
+<script src="${contextPath}/js/jquery-3.5.1.min.js"></script>
+<script src="${contextPath}/js/jquery.form.min.js"></script>
 <script>
 	$(document).ready(function(){
-		
 		$("#upForm1").ajaxForm({//[책수정]버튼 클릭
-			success: function(data, status){
-	   			window.location.href="mg/bookList.do?book_kind=all";
+			success: function(data, status){//업로드에 성공하면 수행
+	   			window.location.href="${contextPath}/mg/bookList.do?book_kind=all";
 	   		}
 	    });
 		
 		$("#bookMain").click(function(){//[관리자 메인으로]버튼 클릭
-			window.location.href="mg/managerMain.do";
+			window.location.href="${contextPath}/mg/managerMain.do";
 		});
 		
 		$("#bookList").click(function(){//[목록으로]버튼 클릭
-			window.location.href="mg/bookList.do?book_kind=all";
+			window.location.href="${contextPath}/mg/bookList.do?book_kind=all";
 		});
-		
 	});
 </script>
 
 <c:if test="${empty sessionScope.id}">
-	<meta http-equiv="Refresh" content="0;url=mg/managerMain.do" >
+  <meta http-equiv="Refresh" content="0;url=${contextPath}/mg/managerMain.do" >
 </c:if>
 
 <div id="header">
-	<button id="bookMain">관리자 메인으로</button>
-	<button id="bookList">목록으로</button>
+  <button id="bookMain">관리자 메인으로</button>
+  <button id="bookList">목록으로</button>
 </div>
-<form id="upForm1" action="mg/bookUpdatePro.do" method="post" enctype="multipart/form-data">
+<form id="upForm1" action="${contextPath}/mg/bookUpdatePro.do" 
+          method="post" enctype="multipart/form-data">
 <div id="bookUpdateForm" class="box">
    <ul>
       <li><label for="book_kind">분류선택</label>
           <select id="book_kind" name="book_kind">
-            <option value="100" <c:if test="${book_kind == 100}">selected</c:if>>문학</option>
-            <option value="200" <c:if test="${book_kind == 200}">selected</c:if>>외국어</option>
-            <option value="300" <c:if test="${book_kind == 300}">selected</c:if>>컴퓨터</option>
+            <option value="100"
+            <c:if test="${book_kind == 100}">selected</c:if>
+            >문학</option>
+            <option value="200"
+            <c:if test="${book_kind == 200}">selected</c:if>
+            >외국어</option>
+            <option value="300"
+            <c:if test="${book_kind == 300}">selected</c:if>
+            >컴퓨터</option>
           </select>
       <li><label for="book_title">제목</label>
-          <input id="book_title" name="book_title" type="text" size="50" maxlength="50" value="${book.book_title}">
+          <input id="book_title" name="book_title" type="text" 
+           size="50" maxlength="50" value="${book.book_title}">
           <input type="hidden" name="book_id" value="${book_id}">
       <li><label for="book_price">가격</label>
-          <input id="book_price" name="book_price" type="text" size="10" maxlength="9" value="${book.book_price}">원
+          <input id="book_price" name="book_price" type="text" 
+           size="10" maxlength="9" value="${book.book_price}">원
       <li><label for="book_count">수량</label>
-          <input id="book_count" name="book_count" type="text" size="10" maxlength="5" value="${book.book_count}">권
+          <input id="book_count" name="book_count" type="text" 
+           size="10" maxlength="5" value="${book.book_count}">권
       <li><label for="author">저자</label>
-          <input id="author" name="author" type="text" size="20" maxlength="30" value="${book.author}">
+          <input id="author" name="author" type="text" 
+           size="20" maxlength="30" value="${book.author}">
       <li><label for="publishing_com">출판사</label>
-          <input id="publishing_com" name="publishing_com" type="text" size="20" maxlength="30" value="${book.publishing_com}">  
+          <input id="publishing_com" name="publishing_com" type="text" 
+           size="20" maxlength="30" value="${book.publishing_com}">  
       <li><label for="publishing_date">출판일</label>
-         <div id="publishing_date"> 
-          <jsp:useBean id="nowTime" class="java.util.Date"></jsp:useBean>
-          <fmt:formatDate var="nowTimeStr" pattern="yyyy-MM-dd" value="${nowTime}" />
-          <fmt:parseNumber var="lastYear" type="NUMBER" value="${nowTimeStr.toString().substring(0,4)}"/>
-          <select name="publishing_year">
-            <c:forEach var="i" begin="2010" end="${lastYear}">
-              <option value="${i}">${i}</option>
-            </c:forEach>
-         </select>년
+          <div id="publishing_date"> 
+            <jsp:useBean id="nowTime" class="java.util.Date"></jsp:useBean>
+            <fmt:formatDate var="nowTimeStr" pattern="yyyy-MM-dd" value="${nowTime}" />
+            <fmt:parseNumber var="lastYear" type="NUMBER" value="${nowTimeStr.toString().substring(0,4)}"/>
+            <select name="publishing_year">
+              <c:forEach var="i" begin="2010" end="${lastYear}">
+                <option value="${i}">${i}</option>
+              </c:forEach>
+           </select>년
            <select name="publishing_month">
              <c:forEach var="i" begin="1" end="12">
                 <option value="${i}">${i}</option>

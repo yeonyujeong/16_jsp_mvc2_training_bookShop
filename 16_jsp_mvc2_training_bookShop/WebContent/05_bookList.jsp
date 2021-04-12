@@ -1,27 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<link rel="stylesheet" href="css/style.css"/>
-<script src="js/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet" href="${contextPath}/css/style.css"/>
+<script src="${contextPath}/js/jquery-3.5.1.min.js"></script>
 <script>
 	$(document).ready(function(){
 		
 		$("#regist").click(function(){//[책등록]버튼 클릭
-			window.location.href="mg/bookRegister.do";
+			window.location.href="${contextPath}/mg/bookRegister.do";
 		});
 		
 		$("#bookMain").click(function(){//[관리자 메인으로]버튼 클릭
-			window.location.href="mg/managerMain.do";
+			window.location.href="${contextPath}/mg/managerMain.do";
 		});
-		
 	});
 	
 	//[수정]버튼을 클릭하면 자동실행
 	function edit(editBtn){
 		var rStr = editBtn.name;
 		var arr = rStr.split(",");
-		var query = "mg/bookUpdate.do?book_id="+arr[0];
+		var query = "${contextPath}/mg/bookUpdate.do?book_id="+arr[0];
 		query += "&book_kind="+arr[1];
 		window.location.href=query;
 	}
@@ -30,14 +30,14 @@
 	function del(delBtn){
 		var rStr = delBtn.name;
 		var arr = rStr.split(",");
-		var query = "mg/bookDeletePro.do?book_id="+arr[0];
+		var query = "${contextPath}/mg/bookDeletePro.do?book_id="+arr[0];
 		query += "&book_kind="+arr[1];
 		window.location.href=query;
 	}
 </script>
 
 <c:if test="${empty sessionScope.id}">
-  <meta http-equiv="Refresh" content="0;url=mg/managerMain.do" >
+  <meta http-equiv="Refresh" content="0;url=${contextPath}/mg/managerMain.do" >
 </c:if>
 
 <div id="listHeader">

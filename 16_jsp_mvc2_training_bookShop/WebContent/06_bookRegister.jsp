@@ -1,36 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<link rel="stylesheet" href="css/style.css"/>
-<script src="js/jquery-3.5.1.min.js"></script>
-<script src="js/jquery.form.min.js"></script>
+<link rel="stylesheet" href="${contextPath}/css/style.css"/>
+<script src="${contextPath}/js/jquery-3.5.1.min.js"></script>
+<script src="${contextPath}/js/jquery.form.min.js"></script>
 <script>
 	$(document).ready(function(){//[책등록]버튼 클릭
 		$("#upForm1").ajaxForm({//이미지를 포함한 상품등록
 			success: function(data, status){//업로드에 성공하면 수행
-	   			window.location.href="mg/bookList.do?book_kind=all";
+	   			window.location.href="${contextPath}/mg/bookList.do?book_kind=all";
 	   		}
 	    });
 		
 		$("#bookMain").click(function(){//[관리자 메인으로]버튼 클릭
-			window.location.href="mg/managerMain.do";
+			window.location.href="${contextPath}/mg/managerMain.do";
 		});
 		
 		$("#bookList").click(function(){//[목록으로]버튼 클릭
-			window.location.href="mg/bookList.do?book_kind=all";
+			window.location.href="${contextPath}/mg/bookList.do?book_kind=all";
 		});
 	});
 </script>
+
 <c:if test="${empty sessionScope.id}">
-	<meta http-equiv="Refresh" content="0;url=mg/managerMain.do" >
+  <meta http-equiv="Refresh" content="0;url=${contextPath}/mg/managerMain.do" >
 </c:if>
 
 <div id="listHeader">
-	<button id="bookMain">관리자 메인으로</button>
-	<button id="bookList">목록으로</button>
+  <button id="bookMain">관리자 메인으로</button>
+  <button id="bookList">목록으로</button>
 </div>
-<form id="upForm1" action="mg/bookRegisterPro.do" method="post" enctype="multipart/form-data">
+<form id="upForm1" action="${contextPath}/mg/bookRegisterPro.do" 
+          method="post" enctype="multipart/form-data">
 <div id="bookRegistForm" class="box">
    <ul>
       <li><label for="book_kind">분류선택</label>
@@ -60,12 +63,12 @@
             <fmt:formatDate var="nowTimeStr" pattern="yyyy-MM-dd" value="${nowTime}" />
             <fmt:parseNumber var="lastYear" type="NUMBER" value="${nowTimeStr.toString().substring(0,4)}"/>
             <select name="publishing_year">
-            	<c:forEach var="i" begin="2010" end="${lastYear}">
-             		<option value="${i}">${i}</option>
-            	</c:forEach>
+              <c:forEach var="i" begin="2010" end="${lastYear}">
+                <option value="${i}">${i}</option>
+              </c:forEach>
            </select>년
-			<select name="publishing_month">
-			<c:forEach var="i" begin="1" end="12">
+           <select name="publishing_month">
+             <c:forEach var="i" begin="1" end="12">
                 <option value="${i}">${i}</option>
              </c:forEach>
            </select>월

@@ -2,73 +2,77 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<link rel="stylesheet" href="css/style.css"/>
-<script src="js/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet" href="${contextPath}/css/style.css"/>
+<script src="${contextPath}/js/jquery-3.5.1.min.js"></script>
 <script>
 	$(document).ready(function(){
-		
-		$("#conShopping").click(function(){			// [쇼핑계속]버튼 클릭
-			window.location.href="list.do?book_kind=all";
+		$("#conShopping").click(function(){//[쇼핑계속]버튼 클릭
+			window.location.href="${contextPath}/list.do?book_kind=all";
 		});
 		
-		
-		$("#shopMain").click(function(){			// [메인으로]버튼 클릭
-			window.location.href="index.do";
+		$("#shopMain").click(function(){//[메인으로]버튼 클릭
+			window.location.href="${contextPath}/index.do";
 		});
-		
 	});
 </script>
 <c:if test="${empty sessionScope.id}">
-	<meta http-equiv="Refresh" content="0;url=index.do">
+  <meta http-equiv="Refresh" content="0;url=${contextPath}/index.do">
 </c:if>
 
 <div id="goShop">
-	<button id="conShopping">쇼핑계속</button>
-	<button id="shopMain">메인으로</button>
+  <button id="conShopping">쇼핑계속</button>
+  <button id="shopMain">메인으로</button>
 </div>
 <div id="buyList">
-	<c:if test="${count == 0}">
-		<ul>
-		   <li>구매 목록이 없습니다.
-		</ul>
-	</c:if>
-	
-	<c:if test="${count > 0}"> 
-		<c:set var="total" value="0"/>
-		<c:forEach var="i" begin="0" end="${buyLists.size()-1}">
-			<c:set var="buylist" value="${buyLists.get(i)}"/>
-			<c:set var="pid" value="${buylist.getBuy_id()}"/>
-			<c:if test="${i+1 > buyLists.size()-1 }"> <c:set var="nid" value="0"/> </c:if>
-			<c:if test="${i+1 <= buyLists.size()-1 }"> <c:set var="nid" value="${buyLists.get(i+1).getBuy_id()}"/> </c:if>
-			<table> 
-				<tr> 
-					<td width="150">주문번호</td> 
-					<td width="300">상품명</td>
-					<td width="100">판매가격</td> 
-					<td width="50">수량</td>
-					<td width="100">금액</td>
-					<td width="100">배송상황</td>  
-				</tr>
-				<tr>
-					<td width="150">${buylist.getBuy_id()}</td> 
-					<td width="300"> <img src="bookImage/${buylist.getBook_image()}" class="cartimage">${buylist.getBook_title()}</td> 
-					<td width="100">
-					<fmt:formatNumber value="${buylist.getBuy_price()}" type="number" pattern="#,##0"/>원</td>
-					<td width="50">${buylist.getBuy_count()}</td> 
-					<td width="100">
-						<c:set var="amount" value="${buylist.getBuy_count()*buylist.getBuy_price()}"/>
-						<c:set var="total" value="${total+amount}"/>
-						<fmt:formatNumber value="${amount}" type="number" pattern="#,##0"/>원
-					</td>
-					<td width="100">${buylist.getSanction()}</td>  
-				</tr>
-			</table>
-			<c:if test="${pid != nid}">
-				<p align="right" class="b">주문금액 : <fmt:formatNumber value="${total}" type="number" pattern="#,##0"/>원</p>
-				<c:set var="total" value="0"/>
-				<c:set var="pid" value="${nid}"/>
-			</c:if>
-		</c:forEach>
-	</c:if>
+<c:if test="${count == 0}">
+   <ul>
+      <li>구매 목록이 없습니다.
+   </ul>
+</c:if>
+
+<c:if test="${count > 0}"> 
+  <c:set var="total" value="0"/>
+  <c:forEach var="i" begin="0" end="${buyLists.size()-1}">
+    <c:set var="buylist" value="${buyLists.get(i)}"/>
+    <c:set var="pid" value="${buylist.getBuy_id()}"/>
+    <c:if test="${i+1 > buyLists.size()-1 }">
+      <c:set var="nid" value="0"/>
+    </c:if>
+    <c:if test="${i+1 <= buyLists.size()-1 }">
+      <c:set var="nid" value="${buyLists.get(i+1).getBuy_id()}"/>
+    </c:if>
+    <table> 
+     <tr> 
+       <td width="150">주문번호</td> 
+       <td width="300">상품명</td>
+       <td width="100">판매가격</td> 
+       <td width="50">수량</td>
+       <td width="100">금액</td>
+       <td width="100">배송상황</td>  
+     </tr>
+     <tr>
+       <td width="150">${buylist.getBuy_id()}</td> 
+       <td width="300"> <img src="${contextPath}/bookImage/${buylist.getBook_image()}" 
+             class="cartimage">${buylist.getBook_title()}</td> 
+       <td width="100">
+         <fmt:formatNumber value="${buylist.getBuy_price()}" type="number" pattern="#,##0"/>원</td>
+       <td width="50">${buylist.getBuy_count()}</td> 
+       <td width="100">
+         <c:set var="amount" value="${buylist.getBuy_count()*buylist.getBuy_price()}"/>
+         <c:set var="total" value="${total+amount}"/>
+         <fmt:formatNumber value="${amount}" type="number" pattern="#,##0"/>원
+       </td>
+       <td width="100">${buylist.getSanction()}</td>  
+     </tr>
+  </table>
+  <c:if test="${pid != nid}">
+    <p align="right" class="b">주문금액 : 
+      <fmt:formatNumber value="${total}" type="number" pattern="#,##0"/>원</p>
+    <c:set var="total" value="0"/>
+    <c:set var="pid" value="${nid}"/>
+  </c:if>
+  </c:forEach>
+</c:if>
 </div>

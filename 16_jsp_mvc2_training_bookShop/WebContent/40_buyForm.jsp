@@ -2,59 +2,55 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<link rel="stylesheet" href="css/style.css"/>
-<script src="js/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet" href="${contextPath}/css/style.css"/>
+<script src="${contextPath}/js/jquery-3.5.1.min.js"></script>
 <script>
 	$(document).ready(function(){
-		
-		$("#cancle").click(function(){
-			window.location.href="index.do";
+		$("#cancle").click(function(){//[취소]버튼 클릭
+			window.location.href="${contextPath}/index.do";
 		});
-		
 	});
 </script>
 
 <c:if test="${empty sessionScope.id}">
-  <meta http-equiv="Refresh" content="0;url=index.do">
+  <meta http-equiv="Refresh" content="0;url=${contextPath}/index.do">
 </c:if>
 
 <div id="cartArea">
-	<table> 
-	    <tr class="cen">  
-	      <td width="300">상품명</td> 
-	      <td width="100">판매가격</td>
-	      <td width="50">수량</td> 
-	      <td width="100" >금액</td>
-	    </tr>
-		<c:set var="total" value="0"/>
-	  	<c:forEach var="cart" items="${cartLists}">
-		    <tr> 
-		       <td width="300">
-		         <img src="bookImage/${cart.getBook_image()}" class="cartimage">${cart.getBook_title()}
-		       </td> 
-		       <td width="100" class="cen">
-		          <fmt:formatNumber value="${cart.getBuy_price()}" type="number" pattern="#,##0"/>원
-		       </td>
-		       <td width="50" class="cen" >
-		       		${cart.getBuy_count()}
-		       </td> 
-		       <td width="100" class="cen">
-		         <c:set var="amount" value="${cart.getBuy_count()*cart.getBuy_price()}"/>
-		         <c:set var="total" value="${total+amount}"/>
-		         <fmt:formatNumber value="${amount}" type="number" pattern="#,##0"/>원
-		       </td>
-		    </tr>
-		  </c:forEach>
-		  <tr>
-		      <td colspan="4" align="right" class="b">총 금액 : 
-		      <fmt:formatNumber value="${total}" type="number" pattern="#,##0"/>원</td>
-		  </tr>
-	</table>
+<table> 
+    <tr class="cen">  
+      <td width="300">상품명</td> 
+      <td width="100">판매가격</td>
+      <td width="50">수량</td> 
+      <td width="100" >금액</td>
+    </tr>
+<c:set var="total" value="0"/>
+  <c:forEach var="cart" items="${cartLists}">
+    <tr> 
+       <td width="300">
+         <img src="${contextPath}/bookImage/${cart.getBook_image()}" 
+             class="cartimage">${cart.getBook_title()}</td> 
+       <td width="100" class="cen">
+          <fmt:formatNumber value="${cart.getBuy_price()}" type="number" pattern="#,##0"/>원</td>
+       <td width="50" class="cen" >${cart.getBuy_count()}</td> 
+       <td width="100" class="cen">
+         <c:set var="amount" value="${cart.getBuy_count()*cart.getBuy_price()}"/>
+         <c:set var="total" value="${total+amount}"/>
+         <fmt:formatNumber value="${amount}" type="number" pattern="#,##0"/>원
+       </td>
+    </tr>
+  </c:forEach>
+    <tr>
+       <td colspan="4" align="right" class="b">총 금액 : 
+        <fmt:formatNumber value="${total}" type="number" pattern="#,##0"/>원</td>
+    </tr>
+</table>
 </div>
 
 <div id="buyArea">
-<form name="buyForm" method="post" action="buyPro.do">
+<form name="buyForm" method="post" action="${contextPath}/buyPro.do">
 <table>
    <tr> 
     <td  colspan="2"><font size="+1" ><b>주문자 정보</b></font></td>
